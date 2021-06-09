@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WelcomeController">
+   <children>
+      <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" onAction="#contionueButtonClicked" prefWidth="160.0" stylesheets="@application.css" text="Kontynuuj" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button maxWidth="160.0" mnemonicParsing="false" onAction="#exitButtonClicked" stylesheets="@application.css" text="Wyjście" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+      <Label styleClass="labelMainAndExit" stylesheets="@application.css" text="Projekt stworzony przez Krystiana Kolcan &#10;na potrzeby zaliczenia przedmiotu PRP.&#10;&#10;Aplikacja wczytuje, wyświetla, tworzy i zapisuje&#10;informacje o przyjmowanych do sprzedaży obrazach&#10;&#10;Aby przejść dalej należy nacisnąć przycisk kontynuuj" GridPane.halignment="CENTER" />
+   </children>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="180.0" />
+      <RowConstraints prefHeight="80.0" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints prefWidth="500.0" />
+   </columnConstraints>
+</GridPane>

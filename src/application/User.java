@@ -10,12 +10,19 @@ public class User {
 	private StringProperty userName;
 	private StringProperty userPassword;
 	private IntegerProperty accessLevel;
+	private StringProperty vAccessLevel;
 	
 	User(int idUser, String userName,String userPassword,int accessLevel){
 		this.idUser = new SimpleIntegerProperty(idUser);
 		this.userName = new SimpleStringProperty(userName);
 		this.userPassword = new SimpleStringProperty(userPassword);
 		this.accessLevel = new SimpleIntegerProperty(accessLevel);
+		if(accessLevel == 1)
+			this.vAccessLevel = new SimpleStringProperty("Pracownik");
+		else if(accessLevel == 2)
+			this.vAccessLevel = new SimpleStringProperty("Prze³o¿ony");
+		else if(accessLevel == 3)
+			this.vAccessLevel = new SimpleStringProperty("Administrator");
 
 	}
 	
@@ -26,10 +33,10 @@ public class User {
 	public IntegerProperty idUserProperty(){
 		return idUser;
 	}
+	
 	public String getUserName() {
 		return this.userName.get();
 	}
-	
 	public StringProperty userNameProperty(){
 		return userName;
 	}
@@ -40,6 +47,7 @@ public class User {
 	public StringProperty userPasswordProperty(){
 		return userPassword;
 	}
+	
 	public int getAccessLevel() {
 		return this.accessLevel.get();
 	}
@@ -48,5 +56,11 @@ public class User {
 		return accessLevel;
 	}
 
+	public String getVAccessLevel() {
+		return this.vAccessLevel.get();
+	}
+	public StringProperty vAccessLevelProperty(){
+		return vAccessLevel;
+	}
 	
 }

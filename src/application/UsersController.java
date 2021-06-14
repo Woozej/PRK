@@ -43,14 +43,14 @@ public class UsersController {
 	private TableColumn<User, String> passwordColumn;
 
 	@FXML
-	private TableColumn<User, Integer> accessLevelColumn;
+	private TableColumn<User, String> accessLevelColumn;
 
 	@FXML
 	private void initialize() {
 		usersTable.setTableMenuButtonVisible(true);
 		userColumn.setCellValueFactory(cellData -> cellData.getValue().userNameProperty());
 		passwordColumn.setCellValueFactory(cellData -> cellData.getValue().userPasswordProperty());
-		accessLevelColumn.setCellValueFactory(cellData -> cellData.getValue().accessLevelProperty().asObject());
+		accessLevelColumn.setCellValueFactory(cellData -> cellData.getValue().vAccessLevelProperty());
 	}
 
 	@FXML

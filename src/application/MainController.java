@@ -26,8 +26,8 @@ public class MainController {
 	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
 	static String user = "KKOLCAN";
 	static String pass = "kkolcan";
-	static String taskUserQuery = "SELECT * FROM TASKS WHERE USER_ID = ? AND STATUS = 1";
-	static String taskUsersQuery = "SELECT * FROM TASKS WHERE REGISTER_USER = ?";
+	static String taskUserQuery = "SELECT T.ID_TASK, T.SUBJECT, T.REMARKS, T.REGISTER_DATE, T.DUE_DATE, T.STATUS, T.REGISTER_USER, U.USER_NAME, T.USER_ID,RU.USER_NAME FROM TASKS T INNER JOIN USERS U ON T.REGISTER_USER = U.ID_USER INNER JOIN USERS RU ON T.USER_ID = RU.ID_USER WHERE USER_ID = ? AND STATUS = 1";
+	static String taskUsersQuery = "SELECT T.ID_TASK, T.SUBJECT, T.REMARKS, T.REGISTER_DATE, T.DUE_DATE, T.STATUS, T.REGISTER_USER, U.USER_NAME, T.USER_ID,RU.USER_NAME FROM TASKS T INNER JOIN USERS U ON T.REGISTER_USER = U.ID_USER INNER JOIN USERS RU ON T.USER_ID = RU.ID_USER WHERE REGISTER_USER = ?";
 
 	private User loggedUser;
 
@@ -45,7 +45,7 @@ public class MainController {
 	private Button usersButton;
 
 	@FXML
-	private TableColumn<Task, Integer> userColumn;
+	private TableColumn<Task, String> userColumn;
 
 	@FXML
 	private TableView<Task> tasksTable;
@@ -63,10 +63,10 @@ public class MainController {
 	private TableColumn<Task, Date> dueDateColumn;
 
 	@FXML
-	private TableColumn<Task, Integer> registerUserColumn;
+	private TableColumn<Task, String> registerUserColumn;
 
 	@FXML
-	private TableColumn<Task, Integer> statusColumn;
+	private TableColumn<Task, String> statusColumn;
 
 	@FXML
 	void Confirm(ActionEvent event) {
@@ -135,7 +135,7 @@ public class MainController {
 
 			while (rs.next()) {
 				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
-						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+						rs.getInt(6), rs.getInt(7), rs.getString(8), rs.getInt(9), rs.getString(10)));
 			}
 			rs.close();
 			tasksTable.setItems(tasks);
@@ -149,13 +149,13 @@ public class MainController {
 	private void initialize() {
 
 		tasksTable.setTableMenuButtonVisible(true);
-		userColumn.setCellValueFactory(cellData -> cellData.getValue().userIdProperty().asObject());
+		userColumn.setCellValueFactory(cellData -> cellData.getValue().userNameProperty());
 		descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
 		remarksColumn.setCellValueFactory(cellData -> cellData.getValue().remarksProperty());
 		registerDateColumn.setCellValueFactory(cellData -> cellData.getValue().registerDateProperty());
 		dueDateColumn.setCellValueFactory(cellData -> cellData.getValue().dueDateProperty());
-		registerUserColumn.setCellValueFactory(cellData -> cellData.getValue().registerUserProperty().asObject());
-		statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty().asObject());
+		registerUserColumn.setCellValueFactory(cellData -> cellData.getValue().registerUserNameProperty());
+		statusColumn.setCellValueFactory(cellData -> cellData.getValue().vStatusProperty());
 
 	}
 
@@ -170,7 +170,7 @@ public class MainController {
 
 			while (rs.next()) {
 				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
-						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+						rs.getInt(6), rs.getInt(7), rs.getString(8), rs.getInt(9), rs.getString(10)));
 			}
 			rs.close();
 			tasksTable.setItems(tasks);
@@ -189,7 +189,7 @@ public class MainController {
 
 			while (rs.next()) {
 				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
-						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+						rs.getInt(6), rs.getInt(7), rs.getString(8), rs.getInt(9), rs.getString(10)));
 			}
 			rs.close();
 			tasksTable.setItems(tasks);
@@ -214,7 +214,7 @@ public class MainController {
 
 			while (rs.next()) {
 				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
-						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+						rs.getInt(6), rs.getInt(7), rs.getString(8), rs.getInt(9), rs.getString(10)));
 			}
 			rs.close();
 			tasksTable.setItems(tasks);

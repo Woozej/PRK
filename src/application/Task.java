@@ -17,9 +17,12 @@ public class Task {
 	private ObjectProperty<Date> dueDate;
 	private IntegerProperty status;
 	private IntegerProperty registerUser;
+	private StringProperty registerUserName;
 	private IntegerProperty userId;
+	private StringProperty userName;
+	private StringProperty vStatus;
 	
-	Task(int idTask,String subject,String remarks,Date registerDate,Date dueDate, int status,int registerUser, int userId){
+	Task(int idTask, String subject, String remarks, Date registerDate, Date dueDate, int status, int registerUser, String registerUserName, int userId, String userName){
 		this.idTask = new SimpleIntegerProperty(idTask);
 		this.subject = new SimpleStringProperty(subject);
 		this.remarks = new SimpleStringProperty(remarks);
@@ -27,7 +30,13 @@ public class Task {
 		this.dueDate = new SimpleObjectProperty<Date>(dueDate);
 		this.status = new SimpleIntegerProperty(status);
 		this.registerUser = new SimpleIntegerProperty(registerUser);
+		this.registerUserName = new SimpleStringProperty(registerUserName);
 		this.userId = new SimpleIntegerProperty(userId);
+		this.userName = new SimpleStringProperty(userName);
+		if (status == 1)
+			vStatus = new SimpleStringProperty("Nowe");
+		else if (status == 2)
+			vStatus = new SimpleStringProperty("Zrobione");
 	}
 
 	public int getIdTask() {
@@ -79,10 +88,31 @@ public class Task {
 		return registerUser;
 	}
 	
+	public String getRegisterUserName() {
+		return this.registerUserName.get();
+	}
+	public StringProperty registerUserNameProperty(){
+		return registerUserName;
+	}
+	
 	public int getUserId() {
 		return this.userId.get();
 	}
 	public IntegerProperty userIdProperty(){
 		return userId;
+	}
+	
+	public String getUserName() {
+		return this.userName.get();
+	}
+	public StringProperty userNameProperty(){
+		return userName;
+	}
+	
+	public String getVStatus() {
+		return this.vStatus.get();
+	}
+	public StringProperty vStatusProperty(){
+		return vStatus;
 	}
 }

@@ -1,15 +1,10 @@
 package application;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,149 +12,214 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainController {
-	ObservableList<PaintingClass> localPaintings = FXCollections.observableArrayList();
-		
-    @FXML
-    private TableView<PaintingClass> paintingsTable;
 
-    @FXML
-    private TableColumn<PaintingClass, String> titleColumn;
+	ObservableList<Task> tasks = FXCollections.observableArrayList();
 
-    @FXML
-    private TableColumn<PaintingClass, String> authorColumn;
+	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
+	static String user = "KKOLCAN";
+	static String pass = "kkolcan";
+	static String taskUserQuery = "SELECT * FROM TASKS WHERE USER_ID = ? AND STATUS = 1";
+	static String taskUsersQuery = "SELECT * FROM TASKS WHERE REGISTER_USER = ?";
 
-    @FXML
-    private TableColumn<PaintingClass, String> sizeColumn;
+	private User loggedUser;
 
-    @FXML
-    private TableColumn<PaintingClass, Double> surfaceColumn;
+	public void setUser(User user) {
+		this.loggedUser = user;
+	}
 
-    @FXML
-    private TableColumn<PaintingClass, Double> weightColumn;
+	@FXML
+	private Button usersTaskButton;
 
-    @FXML
-    private TableColumn<PaintingClass, Double> priceColumn;
+	@FXML
+	private Button newTaskButton;
 
-    @FXML
-    private TextField titleTF;
+	@FXML
+	private Button usersButton;
 
-    @FXML
-    private TextField authorTF;
+	@FXML
+	private TableColumn<Task, Integer> userColumn;
 
-    @FXML
-    private TextField sizeTF;
+	@FXML
+	private TableView<Task> tasksTable;
 
-    @FXML
-    private TextField weightTF;
+	@FXML
+	private TableColumn<Task, String> descriptionColumn;
 
-    @FXML
-    private TextField priceTF;
-	
-    @FXML
-    void AddPainting(ActionEvent event) {
-    	
-    	localPaintings.add(new PaintingClass(titleTF.getText(),authorTF.getText(),sizeTF.getText(),Double.parseDouble(weightTF.getText()),Double.parseDouble(priceTF.getText())));
-    	updatePaintings();
-    }
+	@FXML
+	private TableColumn<Task, String> remarksColumn;
 
-    private void updatePaintings() {
-    	paintingsTable.setItems(localPaintings);
+	@FXML
+	private TableColumn<Task, Date> registerDateColumn;
 
-    }
-    @FXML
-    void Exit(ActionEvent event) {
-    	ViewLoader<GridPane, MainController> viewLoader = new ViewLoader<>("ExitView.fxml");
-    	Stage popUpWindow = new Stage();
-    	Scene scene = new Scene(viewLoader.getLayout());
-    	Stage windowStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-    	popUpWindow.setScene(scene);
-    	popUpWindow.initOwner(windowStage);
-    	popUpWindow.initModality(Modality.APPLICATION_MODAL);
-    	popUpWindow.showAndWait();
-    }
+	@FXML
+	private TableColumn<Task, Date> dueDateColumn;
 
-    @FXML
-   	private void initialize () {
-       	paintingsTable.setTableMenuButtonVisible(true);
-       	titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-       	authorColumn.setCellValueFactory(cellData -> cellData.getValue().authorProperty());
-       	sizeColumn.setCellValueFactory(cellData -> cellData.getValue().sizeProperty());
-       	surfaceColumn.setCellValueFactory(cellData -> cellData.getValue().surfaceProperty().asObject());
-       	weightColumn.setCellValueFactory(cellData -> cellData.getValue().weightProperty().asObject());
-       	priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
-    }
-	
-    @FXML
-    void LoadFile(ActionEvent event) {
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Open Resource File");
-    	Stage windowStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-    	File file =fileChooser.showOpenDialog(windowStage);
-    	if(file != null) {
-			String COMMA_DELIMITER = ",";
-			List<List<String>> records = new ArrayList<>();
-			try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
-			    String line;
-			    while ((line = br.readLine()) != null) {
-			        String[] values = line.split(COMMA_DELIMITER);
-			        records.add(Arrays.asList(values));
-			    }
-			    for(int i = 0;i<records.size();i++) {
-			    	localPaintings.add(new PaintingClass(records.get(i).get(0),records.get(i).get(1),records.get(i).get(2),Double.parseDouble(records.get(i).get(3)),Double.parseDouble(records.get(i).get(4))));
-			    }
-			    
-			}catch (Exception e) {
-	
-		        System.out.println("Error in CsvFileWriter !!!");
-		        e.printStackTrace();
+	@FXML
+	private TableColumn<Task, Integer> registerUserColumn;
+
+	@FXML
+	private TableColumn<Task, Integer> statusColumn;
+
+	@FXML
+	void Confirm(ActionEvent event) {
+		ViewLoader<GridPane, ConfirmController> viewLoader = new ViewLoader<>("ConfirmView.fxml");
+		Stage popUpWindow = new Stage();
+		Scene scene = new Scene(viewLoader.getLayout());
+		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		popUpWindow.setScene(scene);
+		popUpWindow.initOwner(windowStage);
+		popUpWindow.initModality(Modality.APPLICATION_MODAL);
+		ConfirmController controller = viewLoader.getController();
+		controller.loadId(tasksTable.getSelectionModel().getSelectedItem().getIdTask());
+		popUpWindow.showAndWait();
+		LoadData();
+	}
+
+	@FXML
+	void Exit(ActionEvent event) {
+		ViewLoader<GridPane, MainController> viewLoader = new ViewLoader<>("ExitView.fxml");
+		Stage popUpWindow = new Stage();
+		Scene scene = new Scene(viewLoader.getLayout());
+		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		popUpWindow.setScene(scene);
+		popUpWindow.initOwner(windowStage);
+		popUpWindow.initModality(Modality.APPLICATION_MODAL);
+		popUpWindow.showAndWait();
+		LoadData();
+	}
+
+	@FXML
+	void NewTask(ActionEvent event) {
+
+		ViewLoader<GridPane, NewTaskController> viewLoader = new ViewLoader<>("NewTaskView.fxml");
+		Stage popUpWindow = new Stage();
+		Scene scene = new Scene(viewLoader.getLayout());
+		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		popUpWindow.setScene(scene);
+		popUpWindow.initOwner(windowStage);
+		popUpWindow.initModality(Modality.APPLICATION_MODAL);
+		NewTaskController controller = viewLoader.getController();
+		controller.setUser(loggedUser);
+		popUpWindow.showAndWait();
+		LoadData();
+	}
+
+	@FXML
+	void Users(ActionEvent event) {
+		ViewLoader<GridPane, UsersController> viewLoader = new ViewLoader<>("UsersView.fxml");
+		Scene scene = new Scene(viewLoader.getLayout());
+		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		UsersController controller = viewLoader.getController();
+		controller.setUser(loggedUser);
+		controller.LoadExternally();
+		windowStage.setScene(scene);
+	}
+
+	@FXML
+	void UsersTasks(ActionEvent event) {
+		tasks.removeAll(tasks);
+		String query = taskUsersQuery;
+
+		try (Connection connection = DriverManager.getConnection(url, user, pass);
+				PreparedStatement statementLogin = connection.prepareStatement(query);) {
+			statementLogin.setInt(1, loggedUser.getIdUser());
+			ResultSet rs = statementLogin.executeQuery();
+
+			while (rs.next()) {
+				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
 			}
-			updatePaintings();
-    	}
-    }
+			rs.close();
+			tasksTable.setItems(tasks);
 
-    @FXML
-    void SaveFile(ActionEvent event) throws IOException {
-    	
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Save File");
-    	Stage windowStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-    	File file = fileChooser.showSaveDialog(windowStage);
-    	if(file != null) {
-	    	List<String[]> dataLines = new ArrayList<>();
-	    	for(int i =0;i<localPaintings.size();i++) {
-	    		dataLines.add(new String[] 
-	    		    	  { localPaintings.get(i).getTitle(), localPaintings.get(i).getAuthor(), localPaintings.get(i).getSize(), localPaintings.get(i).getWeight().toString(), localPaintings.get(i).getPrice().toString(),""});
-	    	}
-	    	
-	    	try (PrintWriter pw = new PrintWriter(file)) {
-	            dataLines.stream()
-	              .map(this::convertToCSV)
-	              .forEach(pw::println);
-	        }
-    	}
-    }
-    private String convertToCSV(String[] data) {
-        return Stream.of(data)
-          .map(this::escapeSpecialCharacters)
-          .collect(Collectors.joining(","));
-    }
-    
-    public String escapeSpecialCharacters(String data) {
-        String escapedData = data.replaceAll("\\R", " ");
-        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
-            data = data.replace("\"", "\"\"");
-            escapedData = "\"" + data + "\"";
-        }
-        return escapedData;
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	@FXML
+	private void initialize() {
+
+		tasksTable.setTableMenuButtonVisible(true);
+		userColumn.setCellValueFactory(cellData -> cellData.getValue().userIdProperty().asObject());
+		descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+		remarksColumn.setCellValueFactory(cellData -> cellData.getValue().remarksProperty());
+		registerDateColumn.setCellValueFactory(cellData -> cellData.getValue().registerDateProperty());
+		dueDateColumn.setCellValueFactory(cellData -> cellData.getValue().dueDateProperty());
+		registerUserColumn.setCellValueFactory(cellData -> cellData.getValue().registerUserProperty().asObject());
+		statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty().asObject());
+
+	}
+
+	@FXML
+	void Load(ActionEvent event) {
+		tasks.removeAll(tasks);
+		String query = taskUserQuery;
+		try (Connection connection = DriverManager.getConnection(url, user, pass);
+				PreparedStatement statementLogin = connection.prepareStatement(query);) {
+			statementLogin.setInt(1, loggedUser.getIdUser());
+			ResultSet rs = statementLogin.executeQuery();
+
+			while (rs.next()) {
+				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+			}
+			rs.close();
+			tasksTable.setItems(tasks);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	void LoadData() {
+		tasks.removeAll(tasks);
+		String query = taskUserQuery;
+		try (Connection connection = DriverManager.getConnection(url, user, pass);
+				PreparedStatement statementLogin = connection.prepareStatement(query);) {
+			statementLogin.setInt(1, loggedUser.getIdUser());
+			ResultSet rs = statementLogin.executeQuery();
+
+			while (rs.next()) {
+				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+			}
+			rs.close();
+			tasksTable.setItems(tasks);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	void LoadExternally() {
+		String query = taskUserQuery;
+		if (loggedUser.getAccessLevel() < 2) {
+			usersTaskButton.setDisable(true);
+			newTaskButton.setDisable(true);
+		}
+		if (loggedUser.getAccessLevel() < 3)
+			usersButton.setDisable(true);
+
+		try (Connection connection = DriverManager.getConnection(url, user, pass);
+				PreparedStatement statementLogin = connection.prepareStatement(query);) {
+			statementLogin.setInt(1, loggedUser.getIdUser());
+			ResultSet rs = statementLogin.executeQuery();
+
+			while (rs.next()) {
+				tasks.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+						rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+			}
+			rs.close();
+			tasksTable.setItems(tasks);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -18,11 +19,12 @@ public class WelcomeController {
 	static String user = "KKOLCAN";
 	static String pass = "kkolcan";
 	static String level = "SELECT * FROM USERS WHERE USER_NAME = ? AND USER_PASSWORD = ?";
-	@FXML
-	private TextField password;
 
 	@FXML
 	private TextField login;
+	
+    @FXML
+    private PasswordField password;
 
 	@FXML
 	void contionueButtonClicked(ActionEvent event) {
@@ -38,6 +40,7 @@ public class WelcomeController {
 				ViewLoader<GridPane, MainController> viewLoader = new ViewLoader<>("MainView.fxml");
 				MainController controller = viewLoader.getController();
 				controller.setUser(user);
+				controller.loadUsers();
 				controller.LoadExternally();
 				Scene scene = new Scene(viewLoader.getLayout());
 				Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();

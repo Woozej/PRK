@@ -6,9 +6,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -30,7 +32,7 @@ public class NewTaskController {
     private DatePicker dueDateDP;
 
     @FXML
-    private TextField userTF;
+    private ComboBox<User> userCB;
 
     @FXML
     void cancel(ActionEvent event) {
@@ -48,7 +50,7 @@ public class NewTaskController {
     		statementInsert.setDate(2, today);
     		statementInsert.setDate(3, due);
     		statementInsert.setInt(4, loggedUser.getIdUser());
-    		statementInsert.setInt(5, Integer.parseInt(userTF.getText()));
+    		statementInsert.setInt(5, userCB.getValue().getIdUser());
     		
 			ResultSet rs = statementInsert.executeQuery();
 			rs.close();
@@ -58,4 +60,12 @@ public class NewTaskController {
 			e.printStackTrace();
 		}
     }
+    public void setEmployees(ObservableList<User> user )
+	{
+    	userCB.getItems().clear();
+    	userCB.setItems(user);
+		if (!userCB.getItems().isEmpty()) {
+			userCB.getSelectionModel().select(0);
+		}
+	}
 }

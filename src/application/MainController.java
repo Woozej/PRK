@@ -22,13 +22,14 @@ import javafx.stage.Stage;
 public class MainController {
 
 	ObservableList<Task> tasks = FXCollections.observableArrayList();
+	ObservableList<User> users = FXCollections.observableArrayList();
 
 	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
 	static String user = "KKOLCAN";
 	static String pass = "kkolcan";
 	static String taskUserQuery = "SELECT T.ID_TASK, T.SUBJECT, T.REMARKS, T.REGISTER_DATE, T.DUE_DATE, T.STATUS, T.REGISTER_USER, U.USER_NAME, T.USER_ID,RU.USER_NAME FROM TASKS T INNER JOIN USERS U ON T.REGISTER_USER = U.ID_USER INNER JOIN USERS RU ON T.USER_ID = RU.ID_USER WHERE USER_ID = ? AND STATUS = 1";
 	static String taskUsersQuery = "SELECT T.ID_TASK, T.SUBJECT, T.REMARKS, T.REGISTER_DATE, T.DUE_DATE, T.STATUS, T.REGISTER_USER, U.USER_NAME, T.USER_ID,RU.USER_NAME FROM TASKS T INNER JOIN USERS U ON T.REGISTER_USER = U.ID_USER INNER JOIN USERS RU ON T.USER_ID = RU.ID_USER WHERE REGISTER_USER = ?";
-
+	static String usersQuery = "SELECT * FROM USERS";
 	private User loggedUser;
 
 	public void setUser(User user) {
@@ -108,6 +109,7 @@ public class MainController {
 		popUpWindow.initModality(Modality.APPLICATION_MODAL);
 		NewTaskController controller = viewLoader.getController();
 		controller.setUser(loggedUser);
+		controller.setEmployees(users);
 		popUpWindow.showAndWait();
 		LoadData();
 	}
@@ -193,6 +195,24 @@ public class MainController {
 			}
 			rs.close();
 			tasksTable.setItems(tasks);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	void setUsers(ObservableList<User> users) {
+		this.users = users;
+	}
+	
+	void loadUsers() {
+		try (Connection connection = DriverManager.getConnection(url, user, pass);
+				PreparedStatement pst = connection.prepareStatement(usersQuery);) {
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				users.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+			}
+			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

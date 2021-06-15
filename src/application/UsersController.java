@@ -72,6 +72,7 @@ public class UsersController {
 		MainController controller = viewLoader.getController();
 		controller.setUser(loggedUser);
 		controller.LoadExternally();
+		controller.setUsers(users);
 		Scene scene = new Scene(viewLoader.getLayout());
 		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		windowStage.setScene(scene);

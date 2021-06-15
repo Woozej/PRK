@@ -63,4 +63,8 @@ public class User {
 		return vAccessLevel;
 	}
 	
+	public String toString() {
+		return this.getUserName();
+	}
+	
 }

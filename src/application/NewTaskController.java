@@ -14,7 +14,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * @author krystian kolcan
+ * kontroller nowego zadania
+ */
 public class NewTaskController {
 	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
 	static String user = "KKOLCAN";

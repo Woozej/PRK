@@ -4,7 +4,11 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
-
+/**
+ * 
+ * @author krystian kolcan
+ * klasa reprezentuj¹ca zadanie w bazie danych
+ */
 public class User {
 	private IntegerProperty idUser;
 	private StringProperty userName;

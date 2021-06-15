@@ -6,12 +6,16 @@ import javafx.scene.Scene;
 
 import javafx.scene.layout.GridPane;
 
-
+/**
+ * 
+ * @author krystian Kolcan
+ * G³ówna klasa programu
+ */
 public class Main extends Application {
-	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
-	static String user = "KKOLCAN";
-	static String password = "kkolcan";
 
+	/**
+	 * funkcja s³u¿¹ca do w³¹czenia pierwszego okna programu
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -24,11 +28,18 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 * g³ówna czêœæ programu
+	 */
 	public static void main(String[] args) {
 		checkOracleDriver();
 		launch(args);
 	}
-	
+	/**
+	 * funkcja s³u¿¹ca do sprawdzenia dzia³ania sterownika
+	 */
 	public static void checkOracleDriver() {
 		String driverName = "oracle.jdbc.driver.OracleDriver";
 		try {

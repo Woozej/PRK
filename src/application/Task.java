@@ -8,7 +8,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
+/**
+ * 
+ * @author krystian kolcan
+ * klasa reprezentuj¹ca zadanie w bazie danych
+ */
 public class Task {
 	private IntegerProperty idTask;
 	private StringProperty subject;

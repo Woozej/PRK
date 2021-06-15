@@ -18,7 +18,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * @author krystian kolcan
+ * kontroller g³ównego okna aplikacji
+ */
 public class MainController {
 
 	ObservableList<Task> tasks = FXCollections.observableArrayList();

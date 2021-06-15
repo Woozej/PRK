@@ -13,7 +13,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * @author krystian kolcan
+ * klasa kontrolera odpowiadaj¹cego za logowanie siê 
+ */
 public class WelcomeController {
 	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
 	static String user = "KKOLCAN";

@@ -16,7 +16,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * @author krystian kolcan
+ * kontroler ob³uguj¹cy widok kartoteki u¿ytkowników
+ */
 public class UsersController {
 
 	ObservableList<User> users = FXCollections.observableArrayList();

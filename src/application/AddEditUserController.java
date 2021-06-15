@@ -10,8 +10,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * @author Krystian Kolcan
+ * Klasa kontrolera pozwalaj¹ca na dodawanie oraz edycjê u¿ystkowników
+ */
 public class AddEditUserController {
+	/**
+	 * Zmienne potrzebne do nawi¹zywania do po³¹czenia oraz wczeœniej przygotowane kwerendy
+	 */
 	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
 	static String user = "KKOLCAN";
 	static String pass = "kkolcan";
@@ -19,6 +26,9 @@ public class AddEditUserController {
 	static String addQuery = "INSERT INTO USERS(USER_NAME, USER_PASSWORD, ACCESS_LEVEL) VALUES(?,?,?)";
 	static String editQuery = "UPDATE USERS SET USER_NAME = ?, USER_PASSWORD = ?, ACCESS_LEVEL = ? WHERE ID_USER = ?";
 	static int userId;
+	/**
+	 * elementy wymagane do utworzenia widoku
+	 */
     @FXML
     private TextField userNameTF;
 
@@ -28,12 +38,25 @@ public class AddEditUserController {
     @FXML
     private TextField accessLevelTF;
 
+    /**
+     * 
+     * @param event
+     * funkcja obs³uguj¹ca naciœniêcie przycisku "cofnij"
+     * s³u¿y do zamykania okna modalnego
+     */
     @FXML
     void cancel(ActionEvent event) {
     	Stage windowStage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	windowStage.close();
     }
     
+    /**
+     * 
+     * @param event
+     * funkcja obs³uguj¹ca naciœniêcie przycisku "zatwierdz"
+     *  w przypadku gdy zmienna isEdit wynosi true edytujemy u¿ytkownika natomiast
+     *  w przeciwnym przypadku jest on dodawany
+     */
     @FXML
     void confirm(ActionEvent event) {
     	if(isEdit) {
@@ -69,6 +92,11 @@ public class AddEditUserController {
     	}
     	
     }
+    /**
+     * 
+     * @param user
+     * Funkcja wype³niaj¹ca pola u¿ytkownikiem podanym w parametrze
+     */
     void setEdit(User user) {
     	userNameTF.setText(user.getUserName());
     	UserPasswordTF.setText(user.getUserPassword());

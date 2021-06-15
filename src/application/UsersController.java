@@ -24,11 +24,11 @@ public class UsersController {
 	static String url = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
 	static String user = "KKOLCAN";
 	static String pass = "kkolcan";
-	
+
 	private User loggedUser;
 	static String usersQuery = "SELECT * FROM USERS";
 	static String deleteUserQuery = "DELETE FROM USERS WHERE ID_USER = ?";
-	
+
 	public void setUser(User user) {
 		this.loggedUser = user;
 	}
@@ -80,32 +80,35 @@ public class UsersController {
 
 	@FXML
 	void deleteUser(ActionEvent event) {
-		
-		try (Connection connection = DriverManager.getConnection(url, user, pass);
-				PreparedStatement pst = connection.prepareStatement(deleteUserQuery);) {
-			
-			pst.setInt(1, usersTable.getSelectionModel().getSelectedItem().getIdUser());
-			ResultSet rs = pst.executeQuery();
-			rs.close();
-			usersTable.getItems().remove(usersTable.getSelectionModel().getSelectedIndex());
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (usersTable.getSelectionModel().getSelectedIndex() >= 0) {
+			try (Connection connection = DriverManager.getConnection(url, user, pass);
+					PreparedStatement pst = connection.prepareStatement(deleteUserQuery);) {
+
+				pst.setInt(1, usersTable.getSelectionModel().getSelectedItem().getIdUser());
+				ResultSet rs = pst.executeQuery();
+				rs.close();
+				usersTable.getItems().remove(usersTable.getSelectionModel().getSelectedIndex());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@FXML
 	void editUser(ActionEvent event) {
-		ViewLoader<GridPane, AddEditUserController> viewLoader = new ViewLoader<>("AddEditUserView.fxml");
-		Stage popUpWindow = new Stage();
-		Scene scene = new Scene(viewLoader.getLayout());
-		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		popUpWindow.setScene(scene);
-		popUpWindow.initOwner(windowStage);
-		popUpWindow.initModality(Modality.APPLICATION_MODAL);
-		AddEditUserController controller = viewLoader.getController();
-		controller.setEdit(usersTable.getSelectionModel().getSelectedItem());
-		popUpWindow.showAndWait();
-		LoadExternally();
+		if (usersTable.getSelectionModel().getSelectedIndex() >= 0) {
+			ViewLoader<GridPane, AddEditUserController> viewLoader = new ViewLoader<>("AddEditUserView.fxml");
+			Stage popUpWindow = new Stage();
+			Scene scene = new Scene(viewLoader.getLayout());
+			Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			popUpWindow.setScene(scene);
+			popUpWindow.initOwner(windowStage);
+			popUpWindow.initModality(Modality.APPLICATION_MODAL);
+			AddEditUserController controller = viewLoader.getController();
+			controller.setEdit(usersTable.getSelectionModel().getSelectedItem());
+			popUpWindow.showAndWait();
+			LoadExternally();
+		}
 	}
 
 	@FXML

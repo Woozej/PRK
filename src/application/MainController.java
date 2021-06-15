@@ -71,17 +71,19 @@ public class MainController {
 
 	@FXML
 	void Confirm(ActionEvent event) {
-		ViewLoader<GridPane, ConfirmController> viewLoader = new ViewLoader<>("ConfirmView.fxml");
-		Stage popUpWindow = new Stage();
-		Scene scene = new Scene(viewLoader.getLayout());
-		Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		popUpWindow.setScene(scene);
-		popUpWindow.initOwner(windowStage);
-		popUpWindow.initModality(Modality.APPLICATION_MODAL);
-		ConfirmController controller = viewLoader.getController();
-		controller.loadId(tasksTable.getSelectionModel().getSelectedItem().getIdTask());
-		popUpWindow.showAndWait();
-		LoadData();
+		if (tasksTable.getSelectionModel().getSelectedIndex() >= 0) {
+			ViewLoader<GridPane, ConfirmController> viewLoader = new ViewLoader<>("ConfirmView.fxml");
+			Stage popUpWindow = new Stage();
+			Scene scene = new Scene(viewLoader.getLayout());
+			Stage windowStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			popUpWindow.setScene(scene);
+			popUpWindow.initOwner(windowStage);
+			popUpWindow.initModality(Modality.APPLICATION_MODAL);
+			ConfirmController controller = viewLoader.getController();
+			controller.loadId(tasksTable.getSelectionModel().getSelectedItem().getIdTask());
+			popUpWindow.showAndWait();
+			LoadData();
+		}
 	}
 
 	@FXML
@@ -199,11 +201,11 @@ public class MainController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	void setUsers(ObservableList<User> users) {
 		this.users = users;
 	}
-	
+
 	void loadUsers() {
 		try (Connection connection = DriverManager.getConnection(url, user, pass);
 				PreparedStatement pst = connection.prepareStatement(usersQuery);) {
@@ -217,7 +219,7 @@ public class MainController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	void LoadExternally() {
 		String query = taskUserQuery;
 		if (loggedUser.getAccessLevel() < 2) {

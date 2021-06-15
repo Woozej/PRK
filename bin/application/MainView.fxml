@@ -13,12 +13,12 @@
    <children>
       <GridPane>
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -27,17 +27,17 @@
             <Button mnemonicParsing="false" onAction="#Load" stylesheets="@application.css" text="Wczytaj zadania" />
           <Button fx:id="usersTaskButton" mnemonicParsing="false" onAction="#UsersTasks" stylesheets="@application.css" text="Zadania użytkowników" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                <GridPane.margin>
-                  <Insets left="10.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#NewTask" stylesheets="@application.css" text="Nowe Zadanie" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <GridPane.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <Button fx:id="usersButton" mnemonicParsing="false" onAction="#Users" stylesheets="@application.css" text="Użytkownicy" GridPane.columnIndex="3" GridPane.halignment="CENTER">
                <GridPane.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#Confirm" stylesheets="@application.css" text="Potwierdź" GridPane.columnIndex="4" GridPane.halignment="CENTER" />

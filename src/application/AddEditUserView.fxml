@@ -8,41 +8,65 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddEditUserController">
+<GridPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddEditUserController">
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="150.0" />
+      <RowConstraints minHeight="10.0" prefHeight="50.0" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints maxWidth="95.0" minWidth="10.0" prefWidth="81.0" />
-      <ColumnConstraints maxWidth="123.0" minWidth="10.0" prefWidth="119.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="300.0" />
    </columnConstraints>
    <children>
-      <Button mnemonicParsing="false" onAction="#cancel" text="Cofnij" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-      <Button mnemonicParsing="false" onAction="#confirm" text="Zatwierdź" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets left="10.0" />
-         </GridPane.margin>
-      </Button>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa" GridPane.halignment="RIGHT" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hasło" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Poziom" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-      <TextField fx:id="userNameTF" GridPane.columnIndex="1">
-         <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
-         </GridPane.margin>
-      </TextField>
-      <TextField fx:id="UserPasswordTF" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
-         </GridPane.margin>
-      </TextField>
-      <TextField fx:id="accessLevelTF" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
-         </GridPane.margin>
-      </TextField>
+      <GridPane prefHeight="150.0" prefWidth="300.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa" GridPane.halignment="RIGHT" />
+            <TextField fx:id="userNameTF" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="UserPasswordTF" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hasło" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Poziom" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <TextField fx:id="accessLevelTF" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+         </children>
+      </GridPane>
+      <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" onAction="#confirm" prefWidth="150.0" text="Zatwierdź" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#cancel" prefWidth="150.0" text="Cofnij" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></Button>
+         </children>
+      </GridPane>
    </children>
 </GridPane>
